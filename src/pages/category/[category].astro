@@ -1,0 +1,6 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const {category}=Astro.params;const all=await getCollection('articles',({data})=>data.status==='publish');const items=all.filter(e=>e.data.categories.some(c=>c.toLowerCase().includes(category==='kosmos'?'космос':category==='medicina'?'медицин':'технолог')));const title=category==='kosmos'?'Космос и Вселенная':category==='medicina'?'Медицина':'Технологии';
+---
+<Base title={`${title} — Новые Горизонты`}><section class="wrap" style="padding:60px 0 80px"><p class="accent">Рубрика</p><h1 class="serif" style="font-size:58px">{title}</h1><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px">{items.map(e=>{let href='/'+e.data.slug+'/';try{href=new URL(e.data.original_url).pathname}catch{}return <a class="card" href={href}><div style="aspect-ratio:16/10">{e.data.featured_image&&<img src={e.data.featured_image} alt="" style="width:100%;height:100%;object-fit:cover"/>}</div><div style="padding:20px"><h2 class="serif" style="font-size:24px">{e.data.title}</h2><p class="muted">{e.data.date.slice(0,10)}</p></div></a>})}</div>{items.length===0&&<p class="muted">В этой рубрике пока нет материалов.</p>}</section></Base>

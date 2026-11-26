@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+const entries = [...await getCollection('articles'), ...await getCollection('pages')];
+function pathFor(e){try{return decodeURI(new URL(e.data.original_url).pathname).replace(/^\/+|\/+$/g,'')}catch{return e.data.slug}}
+export async function getStaticPaths(){const entries=[...await getCollection('articles'),...await getCollection('pages')];const seen=new Set();return entries.filter(e=>e.data.status==='publish').flatMap(e=>{const p=pathFor(e);if(!p||seen.has(p))return [];seen.add(p);return [{params:{slug:p},props:{entry:e}}]})}
+const {entry}=Astro.props;const {Content}=await render(entry);
+---
+<Base title={entry.data.seo_title||entry.data.title} description={entry.data.seo_description||entry.data.title}><article class="wrap" style="padding:54px 0 80px"><p class="muted"><a href="/">Главная</a> / {entry.data.categories?.[0]||'Материал'}</p><p class="accent">{entry.data.categories?.join(' · ')}</p><h1 class="serif" style="font-size:clamp(38px,6vw,64px);line-height:1.1;max-width:900px">{entry.data.title}</h1><p class="muted">{entry.data.date.slice(0,10)}</p>{entry.data.featured_image&&<img src={entry.data.featured_image} alt="" style="width:100%;max-height:520px;object-fit:cover;border-radius:16px;margin:28px 0"/>}<div class="prose"><Content /></div></article></Base>

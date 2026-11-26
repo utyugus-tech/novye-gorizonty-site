@@ -1,0 +1,12 @@
+{
+  "site": "Новые Горизонты",
+  "source": "WordPress WXR + wp-content ZIP",
+  "published_posts": 25,
+  "draft_posts": 1,
+  "pages": 17,
+  "attachments_in_export": 129,
+  "upload_files_extracted": 638,
+  "article_markdown_files": 26,
+  "page_markdown_files": 17,
+  "note": "HTML сохранён внутри Markdown; сборку и URL mapping нужно проверить локально."
+}
